@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f76d6d9be3c39cd4f8fbd3da69e555b2, type: 3}
+  m_Name: ItemWineConfig
+  m_EditorClassIdentifier: Assembly-CSharp:Items:ItemConfig
+  id: 1
+  name: Wine
+  scaleForInventory: {x: 1, y: 1, z: 1}
+  positionOffsetForInventory: {x: 0, y: 0, z: 0}
+  rotationAxisForInventory: {x: 0, y: 0, z: 1}
+  prefab: {fileID: 3458247511251365779, guid: 83819cc836322524da6151cef5d271f3, type: 3}
+  typeInteraction: 1
+  clipInteraction: {fileID: 8300000, guid: b43e8e2c0cc9dda4ea8baad69d9da3a5, type: 3}
+  idForRemove: 1
+  amountForRemove: 1
+  amountForAdd: 1

@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40db668b4d76c06429b80152eedfd908, type: 3}
+  m_Name: HorrorEventConfig
+  m_EditorClassIdentifier: 
+  events:
+  - triggerType: 2
+    questId: 0
+    taskId: 0
+    progressTrigger: 0
+    sounds: []
+    visuals: []
+    physicsEffects: []
+    subtitlesText: I think I saw something in the window. I need to take a look.
+    delaySubtitle: 0
+    authorType: 0
+  - triggerType: 0
+    questId: 1
+    taskId: 1
+    progressTrigger: 0
+    sounds:
+    - clip: {fileID: 8300000, guid: 9ef156d5c69902e4f9e66ce09ea9d2f4, type: 3}
+      delay: 0
+      volume: 0.75
+      spatial: 1
+      position: {x: 29.231, y: -16.177929, z: 6.386}
+      spatialBlend: 1
+      minDistance: 1
+      maxDistance: 15
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 0
+    visuals:
+    - prefab: {fileID: 919132149155446097, guid: e81b123f9f4cbc846903d8752960cfb4,
+        type: 3}
+      position: {x: 28.87947, y: -16.459375, z: 5.7762876}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
+      parent: {fileID: 0}
+      duration: 0
+      destroyAfterDuration: 0
+      applyVelocity: 0
+      initialVelocity: {x: 0, y: 0, z: 0}
+      forceMode: 0
+      fadeOutBeforeDestroy: 0
+      fadeDuration: 0
+      spawnParticles: {fileID: 0}
+    physicsEffects: []
+    subtitlesText: It looks like a bottle fell off the shelf.
+    delaySubtitle: 1.5
+    authorType: 0
