@@ -1,6 +1,7 @@
 ﻿using Installers;
 using System.Collections;
 using System.Collections.Generic;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -54,13 +55,22 @@ namespace Items
 
             if (_isPlayerInside)
             {
-                _signalBus.Fire<PlayerInsideCoordSignal>(new PlayerInsideCoordSignal
+                var destroyTrigger = new ReactiveProperty<bool>(false);
+                destroyTrigger
+                    .Where(value => value)
+                    .Take(1) 
+                    .Subscribe(_ => Destroy(gameObject))
+                    .AddTo(this); 
+
+                var signal = new PlayerInsideCoordSignal
                 {
                     item = _config,
-                    amount = 1
-                });
+                    amount = 1,
+                    destroySelfTrigger = destroyTrigger
+                };
 
-                Destroy(gameObject);
+                _signalBus.Fire<PlayerInsideCoordSignal>(signal);
+                Debug.Log("Метка поставлена, сигнал обнаружен");
             }
         }
 

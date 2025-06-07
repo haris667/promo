@@ -2,6 +2,7 @@
 using Infrastructure.MVP;
 using Installers;
 using System;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -29,26 +30,35 @@ namespace Subtitles
         private float _delayForShowText = 3;
         private float _punctuationPause = 1;
 
+        private bool _isPlaying = false;
+
+        private float _timeForPreviousEnding;
+
         protected override void Init() 
         {
             if(_hasStartSubtitle)
             {
-                NewSubtitle(AuthorType.Player, _startSubtitle, 1f);
+                Create(AuthorType.Player, _startSubtitle, 1f);
             }
         }
 
-        public async UniTask NewSubtitle(AuthorType type, string text, float delay = 0)
+        public async UniTask Create(AuthorType type, string text, float delay = 0)
         {
+            await UniTask.Delay(TimeSpan.FromSeconds(_timeForPreviousEnding));
             await UniTask.Delay(TimeSpan.FromSeconds(delay));
 
             _text.gameObject.SetActive(true);
             _text.text = GetAuthorName(type);
 
-            await ShowText(text).ContinueWith(() => 
+            if(!_isPlaying)
             {
-                if(_isEndRemove)
-                    _text.gameObject.SetActive(false);
-            });
+                _isPlaying = true;
+                await ShowText(text).ContinueWith(() =>
+                {
+                    if (_isEndRemove)
+                        _text.gameObject.SetActive(false);
+                });
+            }
         }
 
         private bool IsPunctuation(char character)
@@ -58,7 +68,11 @@ namespace Subtitles
 
         private async UniTask ShowText(string text)
         {
-            for(int i = 0; i < text.Length; i++)
+            _timeForPreviousEnding += (Time.fixedDeltaTime * _delayForShowText) * _text.text.Length +
+                              GetPunctuationSymbolsAmount(text) * _punctuationPause + _punctuationPause;
+                              
+
+            for (int i = 0; i < text.Length; i++)
             {
                 await UniTask.Delay(TimeSpan.FromSeconds(Time.fixedDeltaTime * _delayForShowText));
 
@@ -73,6 +87,14 @@ namespace Subtitles
             }
             _signalBus.Fire<SubtitleEndSignal>();
             await UniTask.Delay(TimeSpan.FromSeconds(_punctuationPause));
+
+            _timeForPreviousEnding = 0;
+            _isPlaying = false;
+        }
+
+        private int GetPunctuationSymbolsAmount(string text)
+        {
+            return text.Count(IsPunctuation);
         }
 
         private string GetAuthorName(AuthorType type)
@@ -83,6 +105,8 @@ namespace Subtitles
                     return "Player: ";
                 case AuthorType.Client:
                     return "Client: ";
+                case AuthorType.Electrician:
+                    return "Electrcian: ";
             }
 
             return string.Empty;    
@@ -92,7 +116,8 @@ namespace Subtitles
     public enum AuthorType
     {
         Player,
-        Client
+        Client,
+        Electrician
     }
     
 }

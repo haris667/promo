@@ -1,8 +1,10 @@
-﻿using Infrastructure.MVP;
+﻿using Cysharp.Threading.Tasks;
+using Infrastructure.MVP;
 using Installers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -22,7 +24,7 @@ namespace Quests
 
         public void Initialize()
         {
-            _activeQuest = new ActiveQuest(_model.allQuests.First(quest => quest.autoActivate == true));
+            _activeQuest = new ActiveQuest(_model.allQuests.First(quest => quest.autoActivate == true), _signalBus);
             UpdateTaskTextView();
 
             _signalBus.Subscribe<ItemAddedToInventorySignal>(HandleItemAddedToInventorySignal);
@@ -30,6 +32,7 @@ namespace Quests
             _signalBus.Subscribe<ItemUsedSignal>(HandleItemUsedSignal);
             _signalBus.Subscribe<PlayerInsideCoordSignal>(HandlePlayerInsideCoordSignal);
             _signalBus.Subscribe<DestroyItemSignal>(HandleDestroyItemSignal);
+            _signalBus.Subscribe<CloseInventorySignal>(HandleCloseInventorySignal);
         }
 
         public void Dispose()
@@ -39,6 +42,7 @@ namespace Quests
             _signalBus.Unsubscribe<ItemUsedSignal>(HandleItemUsedSignal);
             _signalBus.Unsubscribe<PlayerInsideCoordSignal>(HandlePlayerInsideCoordSignal);
             _signalBus.Unsubscribe<DestroyItemSignal>(HandleDestroyItemSignal);
+            _signalBus.Unsubscribe<CloseInventorySignal>(HandleCloseInventorySignal);
         }
 
         private void HandleItemAddedToInventorySignal(ItemAddedToInventorySignal signal)
@@ -63,7 +67,12 @@ namespace Quests
 
         private void HandlePlayerInsideCoordSignal(PlayerInsideCoordSignal signal)
         {
-            UpdateQuestProgress(TaskType.InsideCoord, signal.item.id, signal.amount);
+            UpdateQuestProgress(TaskType.InsideCoord, signal.item.id, signal.amount, signal.destroySelfTrigger);
+        }
+
+        private void HandleCloseInventorySignal(CloseInventorySignal signal)
+        {
+            UpdateQuestProgress(TaskType.ButtonClick, "inventory_close", 1);
         }
 
         public override void SetConfigToModel(ScriptableObject config)
@@ -84,27 +93,21 @@ namespace Quests
             }
         }
 
-        private void UpdateQuestProgress(TaskType type, string itemId, int amount)
+        private void UpdateQuestProgress(TaskType type, string itemId, int amount, ReactiveProperty<bool> trigger = null)
         {
-            _activeQuest.UpdateProgress(type, itemId, amount);
+            _activeQuest.UpdateProgress(type, itemId, amount, trigger);
 
             UpdateTaskTextView();
             if (_activeQuest.isCompleted)
-            {
+            {                                         
                 CompleteQuest(_activeQuest);
                 return;
             }
-
-            _signalBus.Fire(new QuestTaskProgressSignal
-            {
-                questId = _activeQuest.сonfig.questId,
-                activeTaskId = _activeQuest.GetActiveTaskId(),
-                progress = _activeQuest.GetTaskProgress()
-            });
         }
 
-        public void UpdateTaskTextView()
+        public async UniTask UpdateTaskTextView()
         {
+            await UniTask.Delay(TimeSpan.FromSeconds(_model.delayBeforeNewQuest));
             var activeTask = _activeQuest.GetActiveTask();
 
             if (activeTask != null)
@@ -120,7 +123,7 @@ namespace Quests
             if (!_model.questsById.TryGetValue(questId, out var config))
                 return;
 
-            var activeQuest = new ActiveQuest(config);
+            var activeQuest = new ActiveQuest(config, _signalBus);
             _activeQuest = activeQuest;
 
             _signalBus.Fire(new QuestStartedSignal { questId = questId });
@@ -136,9 +139,13 @@ namespace Quests
 
         private readonly Dictionary<QuestTask, int> _taskProgress = new();
 
-        public ActiveQuest(QuestConfig config)
+        private SignalBus _signalBus;
+
+
+        public ActiveQuest(QuestConfig config, SignalBus signalBus)
         {
             сonfig = config;
+            _signalBus = signalBus;
 
             foreach (var task in config.tasks)
                 _taskProgress[task] = 0;
@@ -146,7 +153,12 @@ namespace Quests
 
         public QuestTask GetActiveTask()
         {
-            return _taskProgress.FirstOrDefault(task => task.Value < task.Key.requiredAmount).Key;
+            return _taskProgress.FirstOrDefault(task => task.Value < task.Key.requiredAmount && task.Key.isDisplay).Key;
+        }
+
+        public bool GetStatusActiveTask()
+        {
+            return GetActiveTask().requiredAmount > GetTaskProgress();
         }
 
         public string GetActiveTaskId()
@@ -159,14 +171,19 @@ namespace Quests
             return _taskProgress[GetActiveTask()];
         }
 
+        public int GetTaskProgress(QuestTask task)
+        {
+            return _taskProgress[task];
+        }
+
         //система обрабатывает сразу все активные задачи. Если в процессе мы выполним перед активной вторую - это норм, мы перейдем к третьей
-        public void UpdateProgress(TaskType type, string itemId, int amount)
+        public void UpdateProgress(TaskType type, string itemId, int amount, ReactiveProperty<bool> trigger = null)
         {
             if (isCompleted) return;
 
             foreach (var task in сonfig.tasks)
             {
-                if (task.hasPriority && task != GetActiveTask())
+                if ((task.hasPriority && task != GetActiveTask()) || _taskProgress[task] >= task.requiredAmount)
                     continue;
 
                 if (task.type == type && task.itemId == itemId)
@@ -175,10 +192,31 @@ namespace Quests
                         _taskProgress[task] + amount,
                         task.requiredAmount
                     );
+
+                    if (trigger != null && _taskProgress[task] + amount > task.requiredAmount) 
+                        trigger.Value = true; //возвратка если нужно. Внутри отправителя сигнала должна быть реактивная подписка на это поле
+
+                    var activeTask = GetActiveTask();
+
+                    if(activeTask != null && task != activeTask && task.isDisplay) 
+                        TryUpdateTaskEvent(activeTask);
+                    
+                    TryUpdateTaskEvent(task);
                 }
             }
 
             CheckCompletion();
+        }
+
+        //под ивентом подразумевается игровое событие, а не часть синтаксиса
+        private void TryUpdateTaskEvent(QuestTask task)
+        {
+            _signalBus.Fire(new QuestTaskProgressSignal
+            {
+                questId = сonfig.questId,
+                activeTaskId = task.taskId,
+                progress = _taskProgress[task]
+            });
         }
 
         private void CheckCompletion()

@@ -23,6 +23,7 @@ namespace Init
 
         private async void Awake()
         {
+            _inputMap = new InputMap();
             await Init().ContinueWith(() =>
             {
                 _installer.Init();

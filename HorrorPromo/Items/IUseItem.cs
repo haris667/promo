@@ -2,6 +2,6 @@
 {
     public interface IUseItem
     {
-        void Use();
+        void Use(bool isUseSignal = true);
     }
 }

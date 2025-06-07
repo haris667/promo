@@ -21,11 +21,13 @@ MonoBehaviour:
     taskId: 0
     requiredAmount: 1
     hasPriority: 1
+    _isDisplay: 1
   - type: 2
-    name: GIVE MONEY
+    name: take MONEY
     itemId: 0
     taskId: 1
     requiredAmount: 1
-    hasPriority: 1
+    hasPriority: 0
+    _isDisplay: 1
   nextQuestId: 1
   autoActivate: 1

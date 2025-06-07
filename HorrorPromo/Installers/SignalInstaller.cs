@@ -1,4 +1,5 @@
 ﻿using Items;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -39,6 +40,8 @@ namespace Installers
             Container.DeclareSignal<PlayerOutsideCoordSignal>();
 
             Container.DeclareSignal<DestroyItemSignal>();
+
+            Container.DeclareSignal<CloseInventorySignal>();
         }
     }
 
@@ -69,10 +72,12 @@ namespace Installers
         public AudioClip clip;
     }
 
-    public struct PlayerInsideCoordSignal 
+    //где колбэк на обратку - классы, чтобы было понятнее 
+    public class PlayerInsideCoordSignal 
     {
         public ItemConfig item;
         public int amount;
+        public ReactiveProperty<bool> destroySelfTrigger;
     }
 
     public struct PlayerOutsideCoordSignal 
@@ -151,4 +156,6 @@ namespace Installers
     {
         public ItemConfig config;
     }
+
+    public struct CloseInventorySignal { }
 }

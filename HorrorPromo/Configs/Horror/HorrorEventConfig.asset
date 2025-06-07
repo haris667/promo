@@ -17,9 +17,29 @@ MonoBehaviour:
     questId: 0
     taskId: 0
     progressTrigger: 0
-    sounds: []
+    hasRetry: 0
+    amountReapets: 1
+    durationBeforeRepeat: 0
+    durationBeforeOffset: 0
+    sounds:
+    - clip: {fileID: 8300000, guid: 46cee7ba3d0514a49b52cc081ad6ca85, type: 3}
+      delay: 0
+      volume: 0.03
+      spatial: 0
+      position: {x: 29, y: -16.177929, z: 6.386}
+      spatialBlend: 1
+      minDistance: 1
+      maxDistance: 15
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 0
     visuals: []
-    physicsEffects: []
+    lightings: []
+    usedItems: []
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
     subtitlesText: I think I saw something in the window. I need to take a look.
     delaySubtitle: 0
     authorType: 0
@@ -27,24 +47,29 @@ MonoBehaviour:
     questId: 1
     taskId: 1
     progressTrigger: 0
+    hasRetry: 0
+    amountReapets: 1
+    durationBeforeRepeat: 0
+    durationBeforeOffset: 0
     sounds:
     - clip: {fileID: 8300000, guid: 9ef156d5c69902e4f9e66ce09ea9d2f4, type: 3}
       delay: 0
-      volume: 0.75
+      volume: 1
       spatial: 1
       position: {x: 29.231, y: -16.177929, z: 6.386}
       spatialBlend: 1
       minDistance: 1
-      maxDistance: 15
+      maxDistance: 10
       destroyAfterPlay: 1
       loop: 0
       rolloffMode: 0
     visuals:
-    - prefab: {fileID: 919132149155446097, guid: e81b123f9f4cbc846903d8752960cfb4,
+    - prefab: {fileID: 7858285915348939125, guid: 0680f6c8c57c4ee468545c5037ae277c,
         type: 3}
       position: {x: 28.87947, y: -16.459375, z: 5.7762876}
-      rotation: {x: 0, y: 0, z: 0, w: 0}
+      rotation: {x: 0.040452015, y: -0.74755806, z: -0.66138494, w: -0.045722585}
       parent: {fileID: 0}
+      delay: 0
       duration: 0
       destroyAfterDuration: 0
       applyVelocity: 0
@@ -53,7 +78,449 @@ MonoBehaviour:
       fadeOutBeforeDestroy: 0
       fadeDuration: 0
       spawnParticles: {fileID: 0}
-    physicsEffects: []
+    - prefab: {fileID: 8374329659628933376, guid: 88bd736bd13e24f42beed0bb0b299830,
+        type: 3}
+      position: {x: -14, y: -16.53, z: 7.689}
+      rotation: {x: 0, y: 0.6946584, z: 0, w: 0.7193398}
+      parent: {fileID: 0}
+      delay: 0
+      duration: 0.06
+      destroyAfterDuration: 1
+      applyVelocity: 0
+      initialVelocity: {x: 0, y: 0, z: 0}
+      forceMode: 0
+      fadeOutBeforeDestroy: 0
+      fadeDuration: 0
+      spawnParticles: {fileID: 0}
+    lightings: []
+    usedItems: []
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
     subtitlesText: It looks like a bottle fell off the shelf.
     delaySubtitle: 1.5
     authorType: 0
+  - triggerType: 0
+    questId: 1
+    taskId: 2
+    progressTrigger: 0
+    hasRetry: 1
+    amountReapets: 4
+    durationBeforeRepeat: 0.25
+    durationBeforeOffset: 0
+    sounds:
+    - clip: {fileID: 8300000, guid: badce865f813a1b47a79664d26faa08d, type: 3}
+      delay: 0
+      volume: 1
+      spatial: 1
+      position: {x: 29, y: -16.177929, z: 6.386}
+      spatialBlend: 1
+      minDistance: 1
+      maxDistance: 15
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    - clip: {fileID: 8300000, guid: 642f9046c11de44459aeb3e647c0c8cc, type: 3}
+      delay: 0
+      volume: 1
+      spatial: 1
+      position: {x: 29, y: -16.177929, z: 6.386}
+      spatialBlend: 1
+      minDistance: 1
+      maxDistance: 15
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    - clip: {fileID: 8300000, guid: ac836c7126eb12f42ba6872d55c73e23, type: 3}
+      delay: 0
+      volume: 1
+      spatial: 1
+      position: {x: 29, y: -16.177929, z: 6.386}
+      spatialBlend: 1
+      minDistance: 1
+      maxDistance: 15
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 0
+    visuals: []
+    lightings:
+    - delay: 0
+      newIntensity: 0
+      duration: 0.1
+      isLerped: 0
+      isRevertAfterDuration: 1
+    usedItems: []
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
+    subtitlesText: 
+    delaySubtitle: 0.5
+    authorType: 0
+  - triggerType: 1
+    questId: 2
+    taskId: 0
+    progressTrigger: 0
+    hasRetry: 0
+    amountReapets: 0
+    durationBeforeRepeat: 0
+    durationBeforeOffset: 0
+    sounds: []
+    visuals:
+    - prefab: {fileID: 593542545141281283, guid: 9ffd4edfa5582d9498e607317781e880,
+        type: 3}
+      position: {x: 17.813631, y: -15.723, z: 4.598111}
+      rotation: {x: 0, y: -0.3007058, z: 0, w: 0.95371693}
+      parent: {fileID: 0}
+      delay: 0
+      duration: 0
+      destroyAfterDuration: 0
+      applyVelocity: 0
+      initialVelocity: {x: 0, y: 0, z: 0}
+      forceMode: 0
+      fadeOutBeforeDestroy: 0
+      fadeDuration: 0
+      spawnParticles: {fileID: 0}
+    lightings: []
+    usedItems: []
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
+    subtitlesText: In what fucking way? One of the visitors left a business card
+      for an electrician. We should find her.
+    delaySubtitle: 0
+    authorType: 0
+  - triggerType: 0
+    questId: 2
+    taskId: 0
+    progressTrigger: 1
+    hasRetry: 1
+    amountReapets: 4
+    durationBeforeRepeat: 0.25
+    durationBeforeOffset: 0
+    sounds:
+    - clip: {fileID: 8300000, guid: badce865f813a1b47a79664d26faa08d, type: 3}
+      delay: 0
+      volume: 1
+      spatial: 1
+      position: {x: 29, y: -16.177929, z: 6.386}
+      spatialBlend: 1
+      minDistance: 1
+      maxDistance: 15
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    - clip: {fileID: 8300000, guid: 642f9046c11de44459aeb3e647c0c8cc, type: 3}
+      delay: 0
+      volume: 1
+      spatial: 1
+      position: {x: 29, y: -16.177929, z: 6.386}
+      spatialBlend: 1
+      minDistance: 1
+      maxDistance: 15
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    visuals: []
+    lightings:
+    - delay: 0
+      newIntensity: 0
+      duration: 0.1
+      isLerped: 0
+      isRevertAfterDuration: 1
+    usedItems:
+    - delay: 0
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
+    subtitlesText: 
+    delaySubtitle: 38
+    authorType: 0
+  - triggerType: 0
+    questId: 2
+    taskId: 1
+    progressTrigger: 1
+    hasRetry: 0
+    amountReapets: 0
+    durationBeforeRepeat: 0
+    durationBeforeOffset: 0
+    sounds:
+    - clip: {fileID: 8300000, guid: af6edb08e1f686041a968120f681aff9, type: 3}
+      delay: 10
+      volume: 0.03
+      spatial: 0
+      position: {x: 17.707, y: -15.437, z: 6.949}
+      spatialBlend: 0
+      minDistance: 0
+      maxDistance: 0
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    - clip: {fileID: 8300000, guid: 2438ac27a7523ec46bb8645af6bf0f9d, type: 3}
+      delay: 0
+      volume: 1
+      spatial: 0
+      position: {x: 17.707, y: -15.437, z: 6.949}
+      spatialBlend: 0
+      minDistance: 0
+      maxDistance: 0
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    - clip: {fileID: 8300000, guid: 561905a3c782f0e429bfa7a8055decc3, type: 3}
+      delay: 2.5
+      volume: 1
+      spatial: 0
+      position: {x: 17.707, y: -15.437, z: 6.949}
+      spatialBlend: 0
+      minDistance: 0
+      maxDistance: 0
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    - clip: {fileID: 8300000, guid: c15bc31cafe7cfb46a708d01f7dee1cb, type: 3}
+      delay: 17.5
+      volume: 1
+      spatial: 0
+      position: {x: 17.707, y: -15.437, z: 6.949}
+      spatialBlend: 0
+      minDistance: 0
+      maxDistance: 0
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    visuals: []
+    lightings: []
+    usedItems: []
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
+    subtitlesText: Doesn't pick up the phone. Perhaps he will see the call and come.
+    delaySubtitle: 38
+    authorType: 0
+  - triggerType: 0
+    questId: 2
+    taskId: 2
+    progressTrigger: 1
+    hasRetry: 1
+    amountReapets: 4
+    durationBeforeRepeat: 0.15
+    durationBeforeOffset: 0
+    sounds:
+    - clip: {fileID: 8300000, guid: badce865f813a1b47a79664d26faa08d, type: 3}
+      delay: 0
+      volume: 1
+      spatial: 1
+      position: {x: 29, y: -16.177929, z: 6.386}
+      spatialBlend: 1
+      minDistance: 1
+      maxDistance: 15
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    - clip: {fileID: 8300000, guid: 642f9046c11de44459aeb3e647c0c8cc, type: 3}
+      delay: 0
+      volume: 1
+      spatial: 1
+      position: {x: 29, y: -16.177929, z: 6.386}
+      spatialBlend: 1
+      minDistance: 1
+      maxDistance: 15
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    - clip: {fileID: 8300000, guid: 14b61fa20d3f6444d98efd34905d32b9, type: 3}
+      delay: 0
+      volume: 1
+      spatial: 1
+      position: {x: 29, y: -16.177929, z: 6.386}
+      spatialBlend: 1
+      minDistance: 1
+      maxDistance: 15
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    visuals: []
+    lightings:
+    - delay: 0
+      newIntensity: 0
+      duration: 0.05
+      isLerped: 0
+      isRevertAfterDuration: 1
+    usedItems:
+    - delay: 0
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
+    subtitlesText: 
+    delaySubtitle: 0
+    authorType: 0
+  - triggerType: 0
+    questId: 2
+    taskId: 3
+    progressTrigger: 0
+    hasRetry: 0
+    amountReapets: 4
+    durationBeforeRepeat: 0.15
+    durationBeforeOffset: 0
+    sounds: []
+    visuals: []
+    lightings: []
+    usedItems: []
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
+    subtitlesText: The electrician will be here soon, I'll make him coffee in advance.
+    delaySubtitle: 0
+    authorType: 0
+  - triggerType: 0
+    questId: 2
+    taskId: 4
+    progressTrigger: 1
+    hasRetry: 0
+    amountReapets: 4
+    durationBeforeRepeat: 0.15
+    durationBeforeOffset: 0
+    sounds:
+    - clip: {fileID: 8300000, guid: a1788fafc2e38c849afbb3d1d59cd085, type: 3}
+      delay: 0
+      volume: 1
+      spatial: 1
+      position: {x: 26.812, y: -15.459, z: 9.05}
+      spatialBlend: 1
+      minDistance: 0
+      maxDistance: 0
+      destroyAfterPlay: 0
+      loop: 0
+      rolloffMode: 2
+    visuals:
+    - prefab: {fileID: 7566917423226634708, guid: 0aef31d5cff5dfe42b0d5a664a2b4916,
+        type: 3}
+      position: {x: 26.6686, y: -15.457589, z: 8.4785}
+      rotation: {x: 0.45922908, y: -0.5376882, z: -0.5376882, w: -0.45922908}
+      parent: {fileID: 0}
+      delay: 9.5
+      duration: 9
+      destroyAfterDuration: 0
+      applyVelocity: 0
+      initialVelocity: {x: 0, y: 0, z: 0}
+      forceMode: 0
+      fadeOutBeforeDestroy: 0
+      fadeDuration: 0
+      spawnParticles: {fileID: 0}
+    lightings: []
+    usedItems: []
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
+    subtitlesText: 
+    delaySubtitle: 0
+    authorType: 0
+  - triggerType: 0
+    questId: 2
+    taskId: 4
+    progressTrigger: 0
+    hasRetry: 0
+    amountReapets: 4
+    durationBeforeRepeat: 0.15
+    durationBeforeOffset: 0
+    sounds: []
+    visuals: []
+    lightings: []
+    usedItems: []
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
+    subtitlesText: Coffee beans have been found. I'll make him coffee in advance.
+    delaySubtitle: 0
+    authorType: 0
+  - triggerType: 0
+    questId: 2
+    taskId: 4
+    progressTrigger: 0
+    hasRetry: 0
+    amountReapets: 4
+    durationBeforeRepeat: 0.15
+    durationBeforeOffset: 0
+    sounds: []
+    visuals: []
+    lightings: []
+    usedItems: []
+    timelines: []
+    agentEvents: []
+    screamers: []
+    _agentController: {fileID: 0}
+    subtitlesText: Coffee beans have been found. I'll make him coffee in advance.
+    delaySubtitle: 0
+    authorType: 0
+  - triggerType: 0
+    questId: 2
+    taskId: 5
+    progressTrigger: 0
+    hasRetry: 0
+    amountReapets: 4
+    durationBeforeRepeat: 0.15
+    durationBeforeOffset: 0
+    sounds:
+    - clip: {fileID: 8300000, guid: b8c03f869ef57fd459496c740d0c598a, type: 3}
+      delay: 5
+      volume: 0.25
+      spatial: 1
+      position: {x: 15.63, y: -16.53, z: 2.1200001}
+      spatialBlend: 0.93
+      minDistance: 0
+      maxDistance: 55
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    - clip: {fileID: 8300000, guid: 8611d58247e1e2b45ab5a0fdb0e55665, type: 3}
+      delay: 13
+      volume: 1
+      spatial: 0
+      position: {x: 15.63, y: -16.53, z: 2.1200001}
+      spatialBlend: 0.233
+      minDistance: 0
+      maxDistance: 55
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    - clip: {fileID: 8300000, guid: d567fe245c54f454b9055fdc3b421712, type: 3}
+      delay: 13
+      volume: 1
+      spatial: 0
+      position: {x: 15.63, y: -16.53, z: 2.1200001}
+      spatialBlend: 0.233
+      minDistance: 0
+      maxDistance: 55
+      destroyAfterPlay: 1
+      loop: 0
+      rolloffMode: 1
+    visuals: []
+    lightings: []
+    usedItems: []
+    timelines:
+    - delay: 0
+    agentEvents: []
+    screamers:
+    - screamerPrefab: {fileID: 1402464625073885339, guid: eb3c249b2eee88e42b971420d21d81be,
+        type: 3}
+      localPosition: {x: 0, y: 0, z: 0}
+      localRotation: {x: 0, y: -180, z: 0}
+      delay: 26
+      duration: 0
+      animationTrigger: 
+      sound: {fileID: 0}
+      volume: 1
+    _agentController: {fileID: 0}
+    subtitlesText: Good afternoon, did you try to call me, is the electrical panel
+      there? I'm going straight to the electrical panel.
+    delaySubtitle: 13
+    authorType: 2

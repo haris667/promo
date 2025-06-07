@@ -32,6 +32,6 @@ MonoBehaviour:
     itemId: 5
     taskId: 2
     requiredAmount: 1
-    hasPriority: 1
+    hasPriority: 0
   nextQuestId: 2
   autoActivate: 0

@@ -66,7 +66,10 @@ namespace Inventory
             if (_isOpen)
                 _view.Show();
             else
+            {
                 _view.Hide();
+                _signalBus.Fire<CloseInventorySignal>();
+            }
         }
 
         private void SetCursorState(bool state)
@@ -146,7 +149,7 @@ namespace Inventory
             });
         }
 
-        public void RemoveItem(string id, int amount = 1) //id/amount
+        public void RemoveItem(string id, int amount = 1) //id/amountReapets
         {
             if (_model.GetCountItemsById(id) == 0)
                 return;

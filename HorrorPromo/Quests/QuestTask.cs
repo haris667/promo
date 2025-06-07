@@ -1,4 +1,6 @@
-﻿namespace Quests
+﻿using UnityEngine;
+
+namespace Quests
 {
     [System.Serializable]
     public class QuestTask
@@ -12,6 +14,18 @@
                                          //Приоритны потому, потому что они должны быть видны и не пропущены случайно.
                                          //Поэтому лучше не использовать на предметах, которые одноразовы в использовании
                                          //На всякий, ПЕРВАЯ ЗАДАЧА ВСЕГДА ПРИОРИТЕТНА
+        [SerializeField]
+        private bool _isDisplay = true;
+        public bool isDisplay
+        {
+            get
+            {
+                if (hasPriority)
+                    return true;
+                return _isDisplay;
+            }
+            private set { }
+        }
     }
 
     public enum TaskType

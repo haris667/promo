@@ -7,6 +7,7 @@ namespace Quests
     public class QuestRepositoryConfig : ScriptableObject
     {
         public List<QuestConfig> quests;
+        public float delayBeforeNewQuest = 1;
     }
 }
 

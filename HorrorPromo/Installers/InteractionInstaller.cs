@@ -11,6 +11,10 @@ namespace Installers
         {
             Container.Bind<InteractionController>().
                 AsSingle();
+
+            Container.BindInterfacesAndSelfTo<DestroyInteraction>().
+                AsSingle().
+                NonLazy();
         }
     }
 }

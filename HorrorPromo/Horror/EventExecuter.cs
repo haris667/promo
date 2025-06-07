@@ -1,12 +1,14 @@
-﻿using Quests;
+﻿using AI;
+using Cysharp.Threading.Tasks;
+using Quests;
 using Sound;
 using Subtitles;
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
-
 namespace Horror
 {
     //можно и без монобеха на UniTask все сделать, но решил вспомнить корутины, да и спавню я отсюда без фабрики
@@ -19,49 +21,94 @@ namespace Horror
         [SerializeField]
         private SubtitlesView _subtitlesView;
         [SerializeField]
-        private AudioEventFactory _audioFactory;
+        private AudioEventCreator _audioCreator;
         [SerializeField]
-        private GameObjectEventFactory _gameObjectFactory;
+        private LightingEventCreator _lightingCreator;
+        [SerializeField]
+        private GameObjectEventCreator _gameObjectCreator;
+        [SerializeField]
+        private UsedItemsEventCreator _usedItemsCreator;
+        [SerializeField]
+        private TimelineEventCreator _timelineCreator;
+        [SerializeField] 
+        private AgentController _agentController;
+        [SerializeField] 
+        private ScreamerEventCreator _screamerCreator;
+
         /*[Inject] private CameraController _cameraController;
         [Inject] private LightingSystem _lightingSystem;*/
 
         // Основной метод для выполнения события
-        public void ExecuteEvent(GameEvent gameEvent)
+        public async UniTask ExecuteEvent(GameEvent gameEvent)
         {
-            StartCoroutine(ExecuteEventRoutine(gameEvent));
+            StartCoroutine(ExecuteEventRoutine(gameEvent, false));
+
+            if (!gameEvent.hasRetry)
+                return;
+            
+            for(int i = 0; i < gameEvent.amountReapets; i++)
+            {
+                //var duration = gameEvent.durationBeforeRepeat + RandomGeneratorHelper.GenerateRandomInRange(gameEvent.durationBeforeOffset, 2);
+                await UniTask.Delay(TimeSpan.FromSeconds(gameEvent.durationBeforeRepeat));
+                StartCoroutine(ExecuteEventRoutine(gameEvent, true));
+            }
         }
 
-        private IEnumerator ExecuteEventRoutine(GameEvent gameEvent)
+        private IEnumerator ExecuteEventRoutine(GameEvent gameEvent, bool isRepeat)
         {
-            foreach (var sound in gameEvent.sounds)
-            {
-                StartCoroutine(PlayDelayedSound(sound));
-            }
-
             foreach (var visual in gameEvent.visuals)
             {
-                SpawnVisualEffect(visual);
+                ApplyVisualEffect(visual);
             }
 
-            foreach (var physics in gameEvent.physicsEffects)
+            foreach (var lighting in gameEvent.lightings)
             {
-                ApplyPhysicsEffect(physics);
+                ApplyLightingEffect(lighting);
             }
 
-            if(gameEvent.subtitlesText.Any())
+            foreach(var item in gameEvent.usedItems)
             {
-                PlaySubtitles(gameEvent.authorType, gameEvent.subtitlesText, gameEvent.delaySubtitle);
+                ApplyUsedItemEffect(item);
             }
 
+            foreach(var timeline in gameEvent.timelines)
+            {
+                ApplyTimelineEffect(timeline);
+            }
+
+            foreach (var screamer in gameEvent.screamers)
+            {
+                ApplyScreamerEffect(screamer);
+            }
+
+            foreach (var agentEvent in gameEvent.agentEvents)
+            {
+                ApplyAgentEffect(agentEvent);
+            }
+
+            if (gameEvent.subtitlesText.Any() && !isRepeat)
+            {
+                ApplySubtitles(gameEvent.authorType, gameEvent.subtitlesText, gameEvent.delaySubtitle);
+            }        
+
+            if (!isRepeat)
+            {
+                foreach (var sound in gameEvent.sounds)
+                    StartCoroutine(ApplySoundEffect(sound));
+            }
 
             // Ожидание завершения самого длительного эффекта
             float maxDuration = CalculateMaxDuration(gameEvent);
             yield return new WaitForSeconds(maxDuration);
         }
 
-        private void PlaySubtitles(AuthorType type, string text, float delay = 0)
+        private void ApplySubtitles(AuthorType type, string text, float delay = 0)
         {
-            _subtitlesView.NewSubtitle(type, text, delay);
+            _subtitlesView.Create(type, text, delay);
+        }
+        private void ApplyScreamerEffect(ScreamerEventSettings settings)
+        {
+            _screamerCreator.Create(settings).Forget();
         }
 
         private float CalculateMaxDuration(GameEvent gameEvent)
@@ -79,31 +126,54 @@ namespace Horror
                 if (visual.duration > maxDuration) maxDuration = visual.duration;
             }
 
-            foreach (var physics in gameEvent.physicsEffects)
+            foreach (var lighting in gameEvent.lightings)
             {
-                if (physics.duration > maxDuration) maxDuration = physics.duration;
+                if (lighting.duration > maxDuration) maxDuration = lighting.duration;
             }
 
             return maxDuration;
         }
 
-        private IEnumerator PlayDelayedSound(EventSoundSettings soundSettings)
+        private IEnumerator ApplySoundEffect(SoundEventSettings settings)
         {
-            if (soundSettings.delay > 0)
-                yield return new WaitForSeconds(soundSettings.delay);
+            if (settings.delay > 0)
+                yield return new WaitForSeconds(settings.delay);
 
-            if (soundSettings.clip != null)
+            if (settings.clip != null)
             {
-                _audioFactory.Create(soundSettings);
+                _audioCreator.Create(settings);
             }
         }
 
-        private void SpawnVisualEffect(GameObjectEventSettings settings)
+        private async UniTask ApplyAgentEffect(AgentEventSettings settings)
+        {
+            if (_agentController != null)
+            {
+                // Запуск асинхронно без ожидания (агент будет работать параллельно)
+                _agentController.ExecuteAgentEvent(settings);
+            }
+        }
+        private  void ApplyLightingEffect(LightingEventSettings settings)
+        {
+            _lightingCreator.Create(settings);
+        }
+
+        private void ApplyVisualEffect(GameObjectEventSettings settings)
         {
             if (settings.prefab != null)
             {
-                GameObject go = _gameObjectFactory.Create(settings);
+                _gameObjectCreator.Create(settings);
             }
+        }
+
+        private void ApplyTimelineEffect(TimelineEventSettings settings)
+        {
+            _timelineCreator.Create(settings);
+        }
+
+        private void ApplyUsedItemEffect(UsedItemsEventSettings settings)
+        {
+            _usedItemsCreator.Create(settings);
         }
 
         private void ApplyPhysicsEffect(HorrorPhysics physics)
@@ -176,5 +246,4 @@ namespace Horror
             return player.position + randomDirection.normalized * distanceFromPlayer;
         }
     }
-
 }

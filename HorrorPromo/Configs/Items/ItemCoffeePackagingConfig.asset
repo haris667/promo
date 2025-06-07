@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f76d6d9be3c39cd4f8fbd3da69e555b2, type: 3}
-  m_Name: ItemBrokenWineConfig
+  m_Name: ItemCoffeePackagingConfig
   m_EditorClassIdentifier: 
-  id: 5
-  name: Broken wine
+  id: 9
+  name: 
   scaleForInventory: {x: 1, y: 1, z: 1}
-  positionOffsetForInventory: {x: 0, y: 0, z: 0}
+  positionOffsetForInventory: {x: 0, y: 0.05, z: 0}
   rotationAxisForInventory: {x: 0, y: 0, z: 1}
-  prefab: {fileID: 0}
-  typeInteraction: 4
+  prefab: {fileID: 7188270090166294736, guid: d2dbbd218c6a51249881adde52096f7a, type: 3}
+  typeInteraction: 1
   clipInteraction: {fileID: 8300000, guid: b43e8e2c0cc9dda4ea8baad69d9da3a5, type: 3}
   idForRemove: 
   amountForRemove: 0
-  amountForAdd: 0
+  amountForAdd: 1

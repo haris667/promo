@@ -142,16 +142,8 @@ namespace Items
 
     public class DestroyInteraction : IInteractionHandler
     {
-        [Inject]
-        private SignalBus _signalBus;
-
         public void HandleInteraction(InteractionContext context)
         {
-            _signalBus.Fire<DestroyItemSignal>(new DestroyItemSignal
-            {
-                config = context.itemConfig
-            });
-
             context.itemView.Suicide(); 
         }
     }
